@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -28,19 +28,53 @@ const midPadding =
   DEVICE_WIDTH / 2 - profileViewWidth / 2 - blueCircleHorizontalMargin;
 
 const Contact = () => {
+  const contactIconScrollView = useRef(null);
+  const detailsScrollView = useRef(null);
+
   const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
   const [contactDetailHeight, setContactDetailHeight] = useState(0);
 
+  const [contactIsScrolling, setContactIsScrolling] = useState(false);
+
   const onDetailScrollViewItemLayout = useCallback((event) => {
-    const {width, height} = event.nativeEvent.layout;
+    const {height} = event.nativeEvent.layout;
     setContactDetailHeight(height);
   }, []);
+
+  const onDragContactScroll = (event) => {
+    var contentOffsetX = event.nativeEvent.contentOffset.x;
+    var cellIndex = Math.floor(contentOffsetX / profileViewWidth);
+
+    const scrollToIndex =
+      contentOffsetX / profileViewWidth + cellIndex * contactDetailHeight;
+
+    detailsScrollView.current?.scrollTo({
+      x: 0,
+      y: scrollToIndex,
+      animated: true,
+    });
+  };
+
+  const onDragContactDetailScroll = (event) => {
+    var contentOffsetY = event.nativeEvent.contentOffset.y;
+    var cellIndex = Math.floor(contentOffsetY / contactDetailHeight);
+
+    const scrollToIndex =
+      contentOffsetY / contactDetailHeight + cellIndex * profileViewWidth;
+
+    contactIconScrollView.current?.scrollTo({
+      x: 0,
+      y: scrollToIndex,
+      animated: true,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <ScrollView
+          ref={contactIconScrollView}
           style={styles.scrollView}
           contentContainerStyle={styles.contactIconContainer}
           automaticallyAdjustInsets={false}
@@ -51,37 +85,8 @@ const Contact = () => {
           snapToAlignment="start"
           snapToInterval={profileViewWidth + blueCircleHorizontalMargin * 2}
           scrollEventThrottle={36}
-          onScroll={(event) => {
-            var contentOffsetX = event.nativeEvent.contentOffset.x;
-            var contentOffsetY = event.nativeEvent.contentOffset.y;
-
-            var cellWidth = (DEVICE_WIDTH - 100).toFixed(2);
-            var cellHeight = (DEVICE_HEIGHT - 200).toFixed(2);
-
-            var cellIndex = Math.floor(contentOffsetX / cellWidth);
-
-            // Round to the next cell if the scrolling will stop over halfway to the next cell.
-            if (
-              contentOffsetX -
-                Math.floor(contentOffsetX / cellWidth) * cellWidth >
-              cellWidth
-            ) {
-              cellIndex++;
-            }
-
-            // Adjust stopping point to exact beginning of cell.
-            contentOffsetX = cellIndex * cellWidth;
-            contentOffsetY = cellIndex * cellHeight;
-
-            event.nativeEvent.contentOffsetX = contentOffsetX;
-            event.nativeEvent.contentOffsetY = contentOffsetY;
-
-            // this.setState({contentOffsetX:contentOffsetX,contentOffsetY:contentOffsetY});
-            console.log('cellIndex:' + cellIndex);
-
-            console.log('contentOffsetX:' + contentOffsetX);
-            // contentOffset={{x:this.state.contentOffsetX,y:0}}
-          }}>
+          onScrollEndDrag={onDragContactScroll}
+          onScrollBeginDrag={onDragContactScroll}>
           {rows.map((item) => (
             <View style={styles.blueCircle}>
               <Text style={styles.title}>{item}</Text>
@@ -93,6 +98,7 @@ const Contact = () => {
         style={styles.detailsScrollViewContainer}
         onLayout={onDetailScrollViewItemLayout}>
         <ScrollView
+          ref={detailsScrollView}
           style={styles.detailsScrollView}
           automaticallyAdjustInsets={false}
           horizontal={false}
@@ -100,37 +106,10 @@ const Contact = () => {
           scrollEnabled={true}
           decelerationRate={0}
           snapToAlignment="start"
-          snapToInterval={profileViewWidth + blueCircleHorizontalMargin * 2}
+          snapToInterval={contactDetailHeight}
           scrollEventThrottle={36}
-          onScroll={(event) => {
-            var contentOffsetX = event.nativeEvent.contentOffset.x;
-            var contentOffsetY = event.nativeEvent.contentOffset.y;
-
-            var cellWidth = (DEVICE_WIDTH - 100).toFixed(2);
-            var cellHeight = (DEVICE_HEIGHT - 200).toFixed(2);
-
-            var cellIndex = Math.floor(contentOffsetX / cellWidth);
-
-            // Round to the next cell if the scrolling will stop over halfway to the next cell.
-            if (
-              contentOffsetX -
-                Math.floor(contentOffsetX / cellWidth) * cellWidth >
-              cellWidth
-            ) {
-              cellIndex++;
-            }
-
-            // Adjust stopping point to exact beginning of cell.
-            contentOffsetX = cellIndex * cellWidth;
-            contentOffsetY = cellIndex * cellHeight;
-
-            event.nativeEvent.contentOffsetX = contentOffsetX;
-            event.nativeEvent.contentOffsetY = contentOffsetY;
-
-            console.log('cellIndex:' + cellIndex);
-
-            console.log('contentOffsetX:' + contentOffsetX);
-          }}>
+          onScrollBeginDrag={onDragContactDetailScroll}
+          onScrollEndDrag={onDragContactDetailScroll}>
           {rows.map((item) => (
             <View
               style={[
@@ -170,9 +149,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
     flexGrow: 1,
     margin: 10,
+
+    justifyContent: 'center',
     marginBottom: profileViewWidth,
   },
   detailsScrollViewItem: {
+    justifyContent: 'center',
     backgroundColor: 'red',
   },
   detailsScrollView: {
