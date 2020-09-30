@@ -8,106 +8,91 @@
 
 import React from 'react';
 import {
+  Dimensions,
   SafeAreaView,
   StyleSheet,
   ScrollView,
-  View,
   Text,
+  View,
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
+
+const profileViewWidth = 100;
+const blueCircleRadius = 3.6;
+const blueCircleHorizontalMargin = 12;
+
+const midPadding =
+  DEVICE_WIDTH / 2 - profileViewWidth / 2 - blueCircleHorizontalMargin;
+
+const App = () => {
+  const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+        <>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.contentContainer}
+            automaticallyAdjustInsets={false}
+            horizontal={true}
+            pagingEnabled={true}
+            scrollEnabled={true}
+            decelerationRate={0}
+            snapToAlignment="start"
+            snapToInterval={profileViewWidth + blueCircleHorizontalMargin * 2}
+            scrollEventThrottle={36}>
+            {rows.map((item) => (
+              <View style={styles.blueCircle}>
+                <Text style={styles.title}>{item}</Text>
+              </View>
+            ))}
+          </ScrollView>
+          
+          <View style={styles.doucheBagSeparator} />
+        </>
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
+  doucheBagSeparator: {
+    flex: 1,
     position: 'absolute',
-    right: 0,
+    height: DEVICE_HEIGHT,
+    backgroundColor: 'red',
+    alignSelf: 'center',
+    width: 1,
   },
-  body: {
-    backgroundColor: Colors.white,
+  scrollView: {
+    paddingStart: 0,
+    paddingEnd: 0,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  contentContainer: {
+    paddingHorizontal: midPadding,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  blueCircle: {
+    height: profileViewWidth,
+    width: profileViewWidth,
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginHorizontal: blueCircleHorizontalMargin,
+    borderRadius: 50,
+    borderWidth: blueCircleRadius,
+    borderColor: 'red',
+    backgroundColor: 'blue',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  title: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 30,
   },
 });
 
