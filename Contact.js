@@ -35,8 +35,6 @@ const Contact = () => {
 
   const [contactDetailHeight, setContactDetailHeight] = useState(0);
 
-  const [contactIsScrolling, setContactIsScrolling] = useState(false);
-
   const onDetailScrollViewItemLayout = useCallback((event) => {
     const {height} = event.nativeEvent.layout;
     setContactDetailHeight(height);
@@ -45,6 +43,14 @@ const Contact = () => {
   const onDragContactScroll = (event) => {
     var contentOffsetX = event.nativeEvent.contentOffset.x;
     var cellIndex = Math.floor(contentOffsetX / profileViewWidth);
+
+    if (
+      contentOffsetX -
+        Math.floor(contentOffsetX / profileViewWidth) * profileViewWidth >
+      profileViewWidth
+    ) {
+      cellIndex++;
+    }
 
     const scrollToIndex =
       contentOffsetX / profileViewWidth + cellIndex * contactDetailHeight;
@@ -58,14 +64,13 @@ const Contact = () => {
 
   const onDragContactDetailScroll = (event) => {
     var contentOffsetY = event.nativeEvent.contentOffset.y;
-    var cellIndex = Math.floor(contentOffsetY / contactDetailHeight);
+    var cellIndex = Math.ceil(contentOffsetY / contactDetailHeight);
 
-    const scrollToIndex =
-      contentOffsetY / contactDetailHeight + cellIndex * profileViewWidth;
+    const scrollToIndex = cellIndex * profileViewWidth;
 
     contactIconScrollView.current?.scrollTo({
-      x: 0,
-      y: scrollToIndex,
+      x: scrollToIndex + profileViewWidth/2 ,
+      y: 0,
       animated: true,
     });
   };
