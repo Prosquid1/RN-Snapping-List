@@ -24,6 +24,8 @@ const profileViewWidth = 100;
 const blueCircleRadius = 3.6;
 const blueCircleHorizontalMargin = 12;
 
+const snapOffset = blueCircleHorizontalMargin * 2;
+
 const midPadding =
   DEVICE_WIDTH / 2 - profileViewWidth / 2 - blueCircleHorizontalMargin;
 
@@ -31,7 +33,10 @@ const Contact = () => {
   const contactIconScrollView = useRef(null);
   const detailsScrollView = useRef(null);
 
-  const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const [isScrollingContact, setIsScrollingContact] = useState(false);
+  const [isScrollingDetails, setIsScrollingDetails] = useState(false);
+
+  const rows = '0123456789'.split('');
 
   const [contactDetailHeight, setContactDetailHeight] = useState(0);
 
@@ -40,10 +45,38 @@ const Contact = () => {
     setContactDetailHeight(height);
   }, []);
 
-  const onDragContactScroll = (event) => {
-    var contentOffsetX = event.nativeEvent.contentOffset.x;
-    var cellIndex = Math.floor(contentOffsetX / profileViewWidth);
+  const onContactScrollViewTouchStart = (event) => {
+    if (isScrollingDetails) {
+      setIsScrollingDetails(false);
+    }
+    setIsScrollingContact(true);
+  };
 
+  const onContactScrollViewTouchEnd = (event) => {
+    setIsScrollingContact(false);
+  };
+
+  const onDetailScrollViewTouchStart = (event) => {
+    if (isScrollingContact) {
+      setIsScrollingContact(false);
+    }
+    setIsScrollingDetails(true);
+  };
+
+  const onDetailScrollViewTouchEnd = (event) => {
+    console.log('onDetailScrollViewTouchEnd');
+    setIsScrollingDetails(false);
+  };
+
+  const onContactScroll = (event) => {
+    if (isScrollingDetails) {
+      return;
+    }
+    var contentOffsetX = event.nativeEvent.contentOffset.x;
+    console.log('contentOffsetX', contentOffsetX);
+    var cellIndex = Math.floor(
+      contentOffsetX / (profileViewWidth + blueCircleHorizontalMargin),
+    );
     if (
       contentOffsetX -
         Math.floor(contentOffsetX / profileViewWidth) * profileViewWidth >
@@ -51,27 +84,37 @@ const Contact = () => {
     ) {
       cellIndex++;
     }
-
-    const scrollToIndex =
-      contentOffsetX / profileViewWidth + cellIndex * contactDetailHeight;
+    console.log('cellIndex', cellIndex);
+    const scrollToIndex = cellIndex * contactDetailHeight;
 
     detailsScrollView.current?.scrollTo({
       x: 0,
       y: scrollToIndex,
-      animated: true,
+      animated: false,
     });
   };
 
-  const onDragContactDetailScroll = (event) => {
+  const onDetailScroll = (event) => {
+    if (isScrollingContact) {
+      return;
+    }
     var contentOffsetY = event.nativeEvent.contentOffset.y;
-    var cellIndex = Math.ceil(contentOffsetY / contactDetailHeight);
+    var cellIndex = Math.floor(contentOffsetY / contactDetailHeight);
 
-    const scrollToIndex = cellIndex * profileViewWidth;
+    if (
+      contentOffsetY -
+        Math.floor(contentOffsetY / contactDetailHeight) * contactDetailHeight >
+      contactDetailHeight
+    ) {
+      cellIndex++;
+    }
 
+    console.log('cellIndex', cellIndex);
+    const scrollToIndex = cellIndex * (profileViewWidth + snapOffset);
     contactIconScrollView.current?.scrollTo({
-      x: scrollToIndex + profileViewWidth/2 ,
+      x: scrollToIndex,
       y: 0,
-      animated: true,
+      animated: false,
     });
   };
 
@@ -87,11 +130,12 @@ const Contact = () => {
           pagingEnabled={true}
           scrollEnabled={true}
           decelerationRate={0}
+          onTouchStart={onContactScrollViewTouchStart}
+          onTouchEnd={onContactScrollViewTouchEnd}
           snapToAlignment="start"
-          snapToInterval={profileViewWidth + blueCircleHorizontalMargin * 2}
-          scrollEventThrottle={36}
-          onScrollEndDrag={onDragContactScroll}
-          onScrollBeginDrag={onDragContactScroll}>
+          snapToInterval={profileViewWidth + snapOffset}
+          scrollEventThrottle={16}
+          onScroll={onContactScroll}>
           {rows.map((item) => (
             <View style={styles.blueCircle}>
               <Text style={styles.title}>{item}</Text>
@@ -111,10 +155,11 @@ const Contact = () => {
           scrollEnabled={true}
           decelerationRate={0}
           snapToAlignment="start"
+          onTouchStart={onDetailScrollViewTouchStart}
+          onTouchEnd={onDetailScrollViewTouchEnd}
           snapToInterval={contactDetailHeight}
-          scrollEventThrottle={36}
-          onScrollBeginDrag={onDragContactDetailScroll}
-          onScrollEndDrag={onDragContactDetailScroll}>
+          scrollEventThrottle={16}
+          onScroll={onDetailScroll}>
           {rows.map((item) => (
             <View
               style={[
@@ -153,7 +198,6 @@ const styles = StyleSheet.create({
   detailsScrollViewContainer: {
     backgroundColor: 'pink',
     flexGrow: 1,
-    margin: 10,
 
     justifyContent: 'center',
     marginBottom: profileViewWidth,
