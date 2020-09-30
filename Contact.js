@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -14,14 +14,12 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
 } from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
+const contactIconPadding = 30;
 const profileViewWidth = 100;
 const blueCircleRadius = 3.6;
 const blueCircleHorizontalMargin = 12;
@@ -32,28 +30,19 @@ const midPadding =
 const Contact = () => {
   const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-  /**
-   * <View style={{flex:1,backgroundColor:'white'}}>
-    <View style={{justifyContent:'space-around'}}>
-      <View style={{height:50,alignSelf:'stretch',backgroundColor:'pink',margin:5}}/>
-      <View style={{height:50,alignSelf:'stretch',backgroundColor:'pink',marginHorizontal:5}}/>
-      <View style={{height:50,alignSelf:'stretch',backgroundColor:'pink',margin:5}}/>
-    </View>
-    <View style={{flex:1,alignItems:'center',justifyContent:'center',alignSelf:'stretch',backgroundColor:'blue',margin:5}}>
-      <Text style={{color:'white',fontWeight:'bold'}}>
-        View
-      </Text>
-    </View>
-  </View>
-   *
-   */
+  const [contactDetailHeight, setContactDetailHeight] = useState(0);
+
+  const onDetailScrollViewItemLayout = useCallback((event) => {
+    const {width, height} = event.nativeEvent.layout;
+    setContactDetailHeight(height);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={styles.contentContainer}
+          contentContainerStyle={styles.contactIconContainer}
           automaticallyAdjustInsets={false}
           horizontal={true}
           pagingEnabled={true}
@@ -100,13 +89,14 @@ const Contact = () => {
           ))}
         </ScrollView>
       </View>
-      <View style={styles.detailsScrollViewContainer}>
+      <View
+        style={styles.detailsScrollViewContainer}
+        onLayout={onDetailScrollViewItemLayout}>
         <ScrollView
           style={styles.detailsScrollView}
-          contentContainerStyle={styles.contentContainer}
           automaticallyAdjustInsets={false}
           horizontal={false}
-          pagingEnabled={true}
+          pagingEnabled={false}
           scrollEnabled={true}
           decelerationRate={0}
           snapToAlignment="start"
@@ -137,14 +127,16 @@ const Contact = () => {
             event.nativeEvent.contentOffsetX = contentOffsetX;
             event.nativeEvent.contentOffsetY = contentOffsetY;
 
-            // this.setState({contentOffsetX:contentOffsetX,contentOffsetY:contentOffsetY});
             console.log('cellIndex:' + cellIndex);
 
             console.log('contentOffsetX:' + contentOffsetX);
-            // contentOffset={{x:this.state.contentOffsetX,y:0}}
           }}>
           {rows.map((item) => (
-            <View style={styles.blueCircle}>
+            <View
+              style={[
+                styles.detailsScrollViewItem,
+                {height: contactDetailHeight},
+              ]}>
               <Text style={styles.title}>{item}</Text>
             </View>
           ))}
@@ -177,13 +169,14 @@ const styles = StyleSheet.create({
   detailsScrollViewContainer: {
     backgroundColor: 'pink',
     flexGrow: 1,
-    alignSelf: 'stretch',
+    margin: 10,
+    marginBottom: profileViewWidth,
+  },
+  detailsScrollViewItem: {
+    backgroundColor: 'red',
   },
   detailsScrollView: {
     backgroundColor: 'black',
-    margin: 10,
-    flexGrow: 1,
-    alignSelf: 'stretch',
   },
   scrollView: {
     paddingStart: 0,
@@ -191,10 +184,10 @@ const styles = StyleSheet.create({
     height: profileViewWidth + 30,
     backgroundColor: 'blue',
   },
-  contentContainer: {
+  contactIconContainer: {
     paddingHorizontal: midPadding,
     alignItems: 'center',
-    height: profileViewWidth + 30,
+    height: profileViewWidth + contactIconPadding,
   },
 
   blueCircle: {
