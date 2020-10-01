@@ -12,6 +12,7 @@ import users from '../../assets/users';
 
 import {profileViewWidth, snapOffset} from '../dimensions';
 import ProfileImageItem from '../ProfileImageItem';
+import ProfileDetailsItem from '../ProfileDetailsItem/ProfileDetailsItem';
 
 const Contact = () => {
   const contactIconScrollView = useRef(null);
@@ -80,7 +81,7 @@ const Contact = () => {
       <View>
         <ScrollView
           ref={contactIconScrollView}
-          style={styles.scrollView}
+          style={styles.profileImageScrollView}
           contentContainerStyle={styles.contactIconContainer}
           automaticallyAdjustInsets={false}
           horizontal={true}
@@ -128,22 +129,10 @@ const Contact = () => {
           scrollEventThrottle={60}
           onScroll={onDetailScroll}>
           {users.map((user) => (
-            <View
-              key={user.id}
-              style={[
-                styles.detailsScrollViewItem,
-                {height: contactDetailHeight},
-              ]}>
-              <View style={styles.namesContainer}>
-                <Text style={styles.firstName}>{user.firstName}</Text>
-                <Text style={styles.lastName}>{user.lastName}</Text>
-              </View>
-
-              <Text style={styles.role}>{user.role}</Text>
-              <Text style={styles.aboutMe}>About Me</Text>
-
-              <Text style={styles.bio}>{user.about}</Text>
-            </View>
+            <ProfileDetailsItem
+              contactDetailHeight={contactDetailHeight}
+              user={user}
+            />
           ))}
         </ScrollView>
       </View>
