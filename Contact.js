@@ -22,7 +22,7 @@ import users from './assets/users';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const contactIconPadding = 30;
-const profileViewWidth = 100;
+const profileViewWidth = 80;
 const blueCircleRadius = 3.6;
 const blueCircleHorizontalMargin = 12;
 
@@ -88,7 +88,7 @@ const Contact = () => {
     setIsDraggingTop(false);
   };
 
-  const onDetailScrollAnimationEnd = (event) => {
+  const onDetailScrollAnimationEnd = () => {
     setIsDraggingMain(false);
   };
 
@@ -183,10 +183,9 @@ const styles = StyleSheet.create({
   detailsScrollViewItem: {
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: 'red',
+    backgroundColor: 'pink',
   },
   scrollView: {
-    elevation: 500,
     paddingStart: 0,
     paddingEnd: 0,
     height: profileViewWidth + 30,
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     marginHorizontal: blueCircleHorizontalMargin,
-    borderRadius: 50,
+    borderRadius: profileViewWidth/2,
     borderWidth: blueCircleRadius,
     borderColor: '#8DB6D0',
   },
