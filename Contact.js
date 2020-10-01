@@ -13,6 +13,7 @@ import {
   StyleSheet,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -39,7 +40,7 @@ const Contact = () => {
   const [contactOffset, setContactOffset] = useState({x: 0, y: 0});
   const [detailsOffset, setDetailsOffset] = useState({x: 0, y: 0});
 
-  const rows = '0123456789'.split('');
+  const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
   const [contactDetailHeight, setContactDetailHeight] = useState(0);
 
@@ -67,6 +68,21 @@ const Contact = () => {
 
     const scrollToIndex = cellIndex * (profileViewWidth + snapOffset);
     setContactOffset({x: scrollToIndex, y: 0});
+  };
+
+  const onContactItemPressed = (cellIndex) => {
+    const scrollToContactOffsetX = cellIndex * (profileViewWidth + snapOffset);
+    const scrollToDetailIndex = cellIndex * contactDetailHeight;
+    setIsDraggingTop(true);
+    setIsDraggingMain(true);
+    detailsScrollView.current.scrollTo({
+      y: scrollToDetailIndex,
+      animated: true,
+    });
+    contactIconScrollView.current.scrollTo({
+      x: scrollToContactOffsetX,
+      animated: true,
+    });
   };
 
   const onContactScrollAnimationEnd = () => {
@@ -98,10 +114,13 @@ const Contact = () => {
           snapToInterval={profileViewWidth + snapOffset}
           scrollEventThrottle={16}
           onScroll={onContactScroll}>
-          {rows.map((item) => (
-            <View style={styles.blueCircle}>
-              <Text style={styles.title}>{item}</Text>
-            </View>
+          {rows.map((item, index) => (
+            <TouchableOpacity onPress={() => onContactItemPressed(index)}>
+              {/* <TouchableOpacity onPress={onContactItemPressed(index)}> */}
+              <View style={styles.blueCircle}>
+                <Text style={styles.title}>{item}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
@@ -165,7 +184,7 @@ const styles = StyleSheet.create({
   detailsScrollViewItem: {
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: 'red'
+    backgroundColor: 'red',
   },
   scrollView: {
     elevation: 500,
