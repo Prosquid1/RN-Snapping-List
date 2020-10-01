@@ -6,7 +6,7 @@ import {
   midPadding,
   profileViewWidth,
   verticalPadding
-} from './dimensions';
+} from '../dimensions';
 
 export default StyleSheet.create({
   container: {

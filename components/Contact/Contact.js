@@ -4,20 +4,14 @@
  */
 
 import React, {useState, useCallback, useRef} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  Image,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 
 import styles from './styles';
 
 import users from '../../assets/users';
 
-import {profileViewWidth, snapOffset} from './dimensions';
+import {profileViewWidth, snapOffset} from '../dimensions';
+import ProfileImageItem from '../ProfileImageItem';
 
 const Contact = () => {
   const contactIconScrollView = useRef(null);
@@ -102,11 +96,12 @@ const Contact = () => {
           scrollEventThrottle={60}
           onScroll={onContactScroll}>
           {users.map((user, index) => (
-            <TouchableOpacity
+            <ProfileImageItem
               key={user.id}
-              onPress={() => onContactItemPressed(index)}>
-              <Image style={styles.blueCircle} source={user.image} />
-            </TouchableOpacity>
+              index={index}
+              onContactItemPressed={onContactItemPressed}
+              userImage={user.image}
+            />
           ))}
         </ScrollView>
       </View>
