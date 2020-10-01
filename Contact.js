@@ -53,8 +53,7 @@ const Contact = () => {
       return;
     }
     var contentOffsetX = event.nativeEvent.contentOffset.x;
-    var cellIndex =
-      contentOffsetX / (profileViewWidth + blueCircleHorizontalMargin * 2);
+    var cellIndex = contentOffsetX / (profileViewWidth + snapOffset);
     const scrollToIndex = cellIndex * contactDetailHeight;
     setDetailsOffset({x: 0, y: scrollToIndex});
   };
@@ -80,6 +79,7 @@ const Contact = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.navigatorSeparatorLine} />
       <View>
         <ScrollView
           ref={contactIconScrollView}
@@ -91,6 +91,7 @@ const Contact = () => {
           scrollEnabled={true}
           decelerationRate={0}
           contentOffset={contactOffset}
+          showsHorizontalScrollIndicator={false}
           onScrollBeginDrag={() => setIsDraggingTop(true)}
           onMomentumScrollEnd={onContactScrollAnimationEnd}
           snapToAlignment="start"
@@ -104,12 +105,12 @@ const Contact = () => {
           ))}
         </ScrollView>
       </View>
+
       <View
         style={styles.detailsScrollViewContainer}
         onLayout={onDetailScrollViewItemLayout}>
         <ScrollView
           ref={detailsScrollView}
-          style={styles.detailsScrollView}
           automaticallyAdjustInsets={false}
           horizontal={false}
           contentOffset={detailsOffset}
@@ -117,6 +118,8 @@ const Contact = () => {
           scrollEnabled={true}
           decelerationRate={0}
           snapToAlignment="start"
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}
           onScrollBeginDrag={() => setIsDraggingMain(true)}
           onMomentumScrollEnd={onDetailScrollAnimationEnd}
           snapToInterval={contactDetailHeight}
@@ -133,8 +136,6 @@ const Contact = () => {
           ))}
         </ScrollView>
       </View>
-
-      <View style={styles.horizontalLineSeparator} />
     </SafeAreaView>
   );
 };
@@ -142,41 +143,41 @@ const Contact = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  navigatorSeparatorLine: {
+    width: '100%',
+    height: 1,
+    opacity: 0.3,
+    backgroundColor: 'grey',
   },
   safeAreaView: {
     flex: 1,
     marginTop: blueCircleHorizontalMargin,
-    backgroundColor: 'red',
-  },
-  scrollViewContainer: {},
-  horizontalLineSeparator: {
-    height: DEVICE_HEIGHT,
-    backgroundColor: 'red',
-    position: 'absolute',
-    marginLeft: DEVICE_WIDTH / 2,
-    flex: 1,
-    width: 1,
   },
   detailsScrollViewContainer: {
-    backgroundColor: 'pink',
     flexGrow: 1,
     alignContent: 'center',
     justifyContent: 'center',
     marginBottom: profileViewWidth,
+    marginTop: 3,
   },
   detailsScrollViewItem: {
     justifyContent: 'center',
-    backgroundColor: 'pink',
     alignContent: 'center',
-  },
-  detailsScrollView: {
-    backgroundColor: 'black',
+    backgroundColor: 'red'
   },
   scrollView: {
+    elevation: 500,
     paddingStart: 0,
     paddingEnd: 0,
     height: profileViewWidth + 30,
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
+    shadowColor: '#8DB6D0',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.3,
+    marginTop: 1,
+    shadowRadius: 3,
   },
   contactIconContainer: {
     paddingHorizontal: midPadding,
@@ -192,13 +193,11 @@ const styles = StyleSheet.create({
     marginHorizontal: blueCircleHorizontalMargin,
     borderRadius: 50,
     borderWidth: blueCircleRadius,
-    borderColor: 'red',
-    backgroundColor: 'blue',
+    borderColor: '#8DB6D0',
   },
   title: {
     alignSelf: 'center',
-    color: 'white',
-    backgroundColor: 'red',
+    color: 'black',
     fontSize: 30,
   },
 });
