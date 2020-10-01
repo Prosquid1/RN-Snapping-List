@@ -8,9 +8,6 @@ import {
   verticalPadding
 } from '../dimensions';
 
-
-//detailsScrollViewItem, namesContainer, firstName, lastName, role, aboutMe, bio
-
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -42,12 +39,15 @@ export default StyleSheet.create({
   profileImageScrollView: {
     paddingStart: 0,
     paddingEnd: 0,
+    alignContent: 'center',
     height: profileViewWidth + verticalPadding,
     backgroundColor: 'white',
   },
   contactIconContainer: {
     paddingHorizontal: midPadding,
     alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'white',
     height: profileViewWidth + contactIconPadding,
   },
 
