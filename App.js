@@ -2,7 +2,8 @@ import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Contact from './Contact';
+import Contact from './components/Contact';
+
 
 const Stack = createStackNavigator();
 

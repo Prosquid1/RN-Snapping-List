@@ -1,12 +1,9 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
  * @format
  * @flow strict-local
  */
 
-import React, {useState, useCallback, useRef, useMemo} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -17,7 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import users from './assets/users';
+import users from '../../assets/users';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -114,7 +111,7 @@ const Contact = () => {
           scrollEventThrottle={60}
           onScroll={onContactScroll}>
           {users.map((user, index) => (
-            <TouchableOpacity onPress={() => onContactItemPressed(index)}>
+            <TouchableOpacity key={user.id} onPress={() => onContactItemPressed(index)}>
               <Image style={styles.blueCircle} source={user.image} />
             </TouchableOpacity>
           ))}
@@ -145,6 +142,7 @@ const Contact = () => {
           onScroll={onDetailScroll}>
           {users.map((user) => (
             <View
+              key={user.id}
               style={[
                 styles.detailsScrollViewItem,
                 {height: contactDetailHeight},
