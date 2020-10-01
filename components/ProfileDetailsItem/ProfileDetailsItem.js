@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 
-const ProfileDetailsItem = ({key, detailsViewHeight, user}) => {
+const ProfileDetailsItem = ({detailsViewHeight, user}) => {
   return (
     <View
-      key={user.id}
       style={[styles.detailsScrollViewItem, {height: detailsViewHeight}]}>
       <View style={styles.namesContainer}>
         <Text style={styles.firstName}>{user.firstName}</Text>
