@@ -90,7 +90,7 @@ const Contact = () => {
           decelerationRate={0}
           contentOffset={avatarViewOffset}
           showsHorizontalScrollIndicator={false}
-          onScrollBeginDrag={() => setisDraggingAvatarView(true)}
+          onScrollBeginDrag={() => setIsDraggingAvatarView(true)}
           onMomentumScrollEnd={onAvatarScrollAnimationEnd}
           snapToAlignment="start"
           snapToInterval={avatarViewWidth + snapOffset}
