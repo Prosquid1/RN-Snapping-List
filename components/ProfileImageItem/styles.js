@@ -1,19 +1,19 @@
 import {StyleSheet} from 'react-native';
 import {
-  blueCircleHorizontalMargin,
-  blueCircleRadius,
-  profileViewWidth,
+  avatarIconHorizontalMargin,
+  avatarBorderRadius,
+  avatarViewWidth,
 } from '../dimensions';
 
 export default StyleSheet.create({
   profileImageItem: {
-    height: profileViewWidth,
-    width: profileViewWidth,
+    height: avatarViewWidth,
+    width: avatarViewWidth,
     justifyContent: 'center',
     alignContent: 'center',
-    marginHorizontal: blueCircleHorizontalMargin,
-    borderRadius: profileViewWidth / 2,
-    borderWidth: blueCircleRadius,
+    marginHorizontal: avatarIconHorizontalMargin,
+    borderRadius: avatarViewWidth / 2,
+    borderWidth: avatarBorderRadius,
     borderColor: '#8DB6D0',
   },
 });

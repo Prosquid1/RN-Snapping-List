@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {
-  blueCircleHorizontalMargin,
-  blueCircleRadius,
-  contactIconPadding,
+  avatarIconHorizontalMargin,
+  avatarBorderRadius,
+  avatarVerticalPadding,
   midPadding,
-  profileViewWidth,
+  avatarViewWidth,
   verticalPadding
 } from '../dimensions';
 
@@ -26,7 +26,7 @@ export default StyleSheet.create({
     flexGrow: 1,
     alignContent: 'center',
     justifyContent: 'center',
-    marginBottom: profileViewWidth,
+    marginBottom: avatarViewWidth,
   },
   scrollingShadowView: {
     ...Platform.select({
@@ -40,7 +40,7 @@ export default StyleSheet.create({
     paddingStart: 0,
     paddingEnd: 0,
     alignContent: 'center',
-    height: profileViewWidth + verticalPadding,
+    height: avatarViewWidth + verticalPadding,
     backgroundColor: 'white',
   },
   contactIconContainer: {
@@ -48,17 +48,17 @@ export default StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    height: profileViewWidth + contactIconPadding,
+    height: avatarViewWidth + avatarVerticalPadding,
   },
 
   blueCircle: {
-    height: profileViewWidth,
-    width: profileViewWidth,
+    height: avatarViewWidth,
+    width: avatarViewWidth,
     justifyContent: 'center',
     alignContent: 'center',
-    marginHorizontal: blueCircleHorizontalMargin,
-    borderRadius: profileViewWidth / 2,
-    borderWidth: blueCircleRadius,
+    marginHorizontal: avatarIconHorizontalMargin,
+    borderRadius: avatarViewWidth / 2,
+    borderWidth: avatarBorderRadius,
     borderColor: '#8DB6D0',
   },
 });

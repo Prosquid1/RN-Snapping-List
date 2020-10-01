@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 
-const ProfileDetailsItem = ({contactDetailHeight, user}) => {
+const ProfileDetailsItem = ({key, detailsViewHeight, user}) => {
   return (
     <View
       key={user.id}
-      style={[styles.detailsScrollViewItem, {height: contactDetailHeight}]}>
+      style={[styles.detailsScrollViewItem, {height: detailsViewHeight}]}>
       <View style={styles.namesContainer}>
         <Text style={styles.firstName}>{user.firstName}</Text>
         <Text style={styles.lastName}>{user.lastName}</Text>
@@ -24,7 +24,7 @@ const ProfileDetailsItem = ({contactDetailHeight, user}) => {
 };
 
 ProfileDetailsItem.propTypes = {
-  contactDetailHeight: PropTypes.number.isRequired,
+  detailsViewHeight: PropTypes.number.isRequired,
   user: PropTypes.object.isRequired,
 };
 

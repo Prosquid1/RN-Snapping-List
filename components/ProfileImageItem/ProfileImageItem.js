@@ -11,11 +11,11 @@ import styles from './styles';
 const ProfileImageItem = ({
     key,
     index,
-    onContactItemPressed,
+    onAvatarItemPressed,
     userImage,
 }) => {
   return (
-    <TouchableOpacity key={key} onPress={() => onContactItemPressed(index)}>
+    <TouchableOpacity key={key} onPress={() => onAvatarItemPressed(index)}>
       <Image style={styles.profileImageItem} source={userImage} />
     </TouchableOpacity>
   );
@@ -24,7 +24,7 @@ const ProfileImageItem = ({
 ProfileImageItem.propTypes = {
     index: PropTypes.number.isRequired,
     key: PropTypes.number.isRequired,
-    onContactItemPressed: PropTypes.func.isRequired,
+    onAvatarItemPressed: PropTypes.func.isRequired,
     userImage: PropTypes.object.isRequired
   };
 
