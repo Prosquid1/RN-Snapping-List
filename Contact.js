@@ -111,7 +111,7 @@ const Contact = () => {
           onMomentumScrollEnd={onContactScrollAnimationEnd}
           snapToAlignment="start"
           snapToInterval={profileViewWidth + snapOffset}
-          scrollEventThrottle={16}
+          scrollEventThrottle={60}
           onScroll={onContactScroll}>
           {users.map((user, index) => (
             <TouchableOpacity onPress={() => onContactItemPressed(index)}>
@@ -120,6 +120,9 @@ const Contact = () => {
           ))}
         </ScrollView>
       </View>
+
+      { isDraggingMain && <View style={styles.scrollingShadowView} /> }
+
 
       <View
         style={styles.detailsScrollViewContainer}
@@ -138,7 +141,7 @@ const Contact = () => {
           onScrollBeginDrag={() => setIsDraggingMain(true)}
           onMomentumScrollEnd={onDetailScrollAnimationEnd}
           snapToInterval={contactDetailHeight}
-          scrollEventThrottle={16}
+          scrollEventThrottle={60}
           onScroll={onDetailScroll}>
           {users.map((user) => (
             <View
@@ -170,37 +173,39 @@ const styles = StyleSheet.create({
   },
   namesContainer: {
     alignSelf: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   firstName: {
     alignSelf: 'center',
     color: 'black',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 24,
   },
   lastName: {
     alignSelf: 'center',
     color: 'black',
     fontSize: 24,
-    marginStart: 4
+    marginStart: 4,
   },
   role: {
     alignSelf: 'center',
     color: 'grey',
-    fontSize: 18
+    fontWeight: '400',
+    marginTop: 8,
+    fontSize: 18,
   },
   aboutMe: {
     alignSelf: 'flex-start',
     color: 'black',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 20,
     marginTop: 20,
-    
   },
   bio: {
     color: 'grey',
-    marginTop: 4,
-    fontSize: 18
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400'
   },
   navigatorSeparatorLine: {
     width: '100%',
@@ -217,22 +222,24 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     marginBottom: profileViewWidth,
-    marginTop: 3,
   },
   detailsScrollViewItem: {
     alignContent: 'center',
-    padding: 20
+    padding: 20,
+  },
+  scrollingShadowView: {
+    ...Platform.select({
+      ios: {height: 0.3, opacity: 0.3, backgroundColor: 'grey'},
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   scrollView: {
     paddingStart: 0,
     paddingEnd: 0,
     height: profileViewWidth + 30,
     backgroundColor: 'white',
-    shadowColor: '#8DB6D0',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.3,
-    marginTop: 1,
-    shadowRadius: 3,
   },
   contactIconContainer: {
     paddingHorizontal: midPadding,
