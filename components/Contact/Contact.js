@@ -5,28 +5,19 @@
 
 import React, {useState, useCallback, useRef} from 'react';
 import {
-  Dimensions,
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   Text,
   Image,
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import styles from './styles';
+
 import users from '../../assets/users';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
-
-const contactIconPadding = 30;
-const profileViewWidth = 80;
-const blueCircleRadius = 4;
-const blueCircleHorizontalMargin = 12;
-
-const snapOffset = blueCircleHorizontalMargin * 2;
-
-const midPadding =
-  DEVICE_WIDTH / 2 - profileViewWidth / 2 - blueCircleHorizontalMargin;
+import {profileViewWidth, snapOffset} from './dimensions';
 
 const Contact = () => {
   const contactIconScrollView = useRef(null);
@@ -111,15 +102,16 @@ const Contact = () => {
           scrollEventThrottle={60}
           onScroll={onContactScroll}>
           {users.map((user, index) => (
-            <TouchableOpacity key={user.id} onPress={() => onContactItemPressed(index)}>
+            <TouchableOpacity
+              key={user.id}
+              onPress={() => onContactItemPressed(index)}>
               <Image style={styles.blueCircle} source={user.image} />
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
 
-      { isDraggingMain && <View style={styles.scrollingShadowView} /> }
-
+      {isDraggingMain && <View style={styles.scrollingShadowView} />}
 
       <View
         style={styles.detailsScrollViewContainer}
@@ -163,98 +155,5 @@ const Contact = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  namesContainer: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-  },
-  firstName: {
-    alignSelf: 'center',
-    color: 'black',
-    fontWeight: '600',
-    fontSize: 24,
-  },
-  lastName: {
-    alignSelf: 'center',
-    color: 'black',
-    fontSize: 24,
-    marginStart: 4,
-  },
-  role: {
-    alignSelf: 'center',
-    color: 'grey',
-    fontWeight: '400',
-    marginTop: 8,
-    fontSize: 18,
-  },
-  aboutMe: {
-    alignSelf: 'flex-start',
-    color: 'black',
-    fontWeight: '600',
-    fontSize: 20,
-    marginTop: 20,
-  },
-  bio: {
-    color: 'grey',
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400'
-  },
-  navigatorSeparatorLine: {
-    width: '100%',
-    height: 1,
-    opacity: 0.3,
-    backgroundColor: 'grey',
-  },
-  safeAreaView: {
-    flex: 1,
-    marginTop: blueCircleHorizontalMargin,
-  },
-  detailsScrollViewContainer: {
-    flexGrow: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
-    marginBottom: profileViewWidth,
-  },
-  detailsScrollViewItem: {
-    alignContent: 'center',
-    padding: 20,
-  },
-  scrollingShadowView: {
-    ...Platform.select({
-      ios: {height: 0.3, opacity: 0.3, backgroundColor: 'grey'},
-      android: {
-        elevation: 5,
-      },
-    }),
-  },
-  scrollView: {
-    paddingStart: 0,
-    paddingEnd: 0,
-    height: profileViewWidth + 30,
-    backgroundColor: 'white',
-  },
-  contactIconContainer: {
-    paddingHorizontal: midPadding,
-    alignItems: 'center',
-    height: profileViewWidth + contactIconPadding,
-  },
-
-  blueCircle: {
-    height: profileViewWidth,
-    width: profileViewWidth,
-    justifyContent: 'center',
-    alignContent: 'center',
-    marginHorizontal: blueCircleHorizontalMargin,
-    borderRadius: profileViewWidth / 2,
-    borderWidth: blueCircleRadius,
-    borderColor: '#8DB6D0',
-  },
-});
 
 export default Contact;
