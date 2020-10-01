@@ -23,7 +23,7 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const contactIconPadding = 30;
 const profileViewWidth = 80;
-const blueCircleRadius = 3.6;
+const blueCircleRadius = 4;
 const blueCircleHorizontalMargin = 12;
 
 const snapOffset = blueCircleHorizontalMargin * 2;
@@ -115,10 +115,7 @@ const Contact = () => {
           onScroll={onContactScroll}>
           {users.map((user, index) => (
             <TouchableOpacity onPress={() => onContactItemPressed(index)}>
-              <Image
-                style={styles.blueCircle}
-                source={user.image} 
-              />
+              <Image style={styles.blueCircle} source={user.image} />
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -149,7 +146,15 @@ const Contact = () => {
                 styles.detailsScrollViewItem,
                 {height: contactDetailHeight},
               ]}>
-              <Text style={styles.title}>{user.about}</Text>
+              <View style={styles.namesContainer}>
+                <Text style={styles.firstName}>{user.firstName}</Text>
+                <Text style={styles.lastName}>{user.lastName}</Text>
+              </View>
+
+              <Text style={styles.role}>{user.role}</Text>
+              <Text style={styles.aboutMe}>About Me</Text>
+
+              <Text style={styles.bio}>{user.about}</Text>
             </View>
           ))}
         </ScrollView>
@@ -162,6 +167,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  namesContainer: {
+    alignSelf: 'center',
+    flexDirection: 'row'
+  },
+  firstName: {
+    alignSelf: 'center',
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 24,
+  },
+  lastName: {
+    alignSelf: 'center',
+    color: 'black',
+    fontSize: 24,
+    marginStart: 4
+  },
+  role: {
+    alignSelf: 'center',
+    color: 'grey',
+    fontSize: 18
+  },
+  aboutMe: {
+    alignSelf: 'flex-start',
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 20,
+    
+  },
+  bio: {
+    color: 'grey',
+    marginTop: 4,
+    fontSize: 18
   },
   navigatorSeparatorLine: {
     width: '100%',
@@ -181,9 +220,8 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   detailsScrollViewItem: {
-    justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: 'pink',
+    padding: 20
   },
   scrollView: {
     paddingStart: 0,
@@ -208,14 +246,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     marginHorizontal: blueCircleHorizontalMargin,
-    borderRadius: profileViewWidth/2,
+    borderRadius: profileViewWidth / 2,
     borderWidth: blueCircleRadius,
     borderColor: '#8DB6D0',
-  },
-  title: {
-    alignSelf: 'center',
-    color: 'black',
-    fontSize: 30,
   },
 });
 
