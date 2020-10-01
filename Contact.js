@@ -6,19 +6,20 @@
  * @flow strict-local
  */
 
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useMemo} from 'react';
 import {
   Dimensions,
   SafeAreaView,
   StyleSheet,
   ScrollView,
   Text,
+  Image,
   TouchableOpacity,
   View,
 } from 'react-native';
+import users from './assets/users';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 const contactIconPadding = 30;
 const profileViewWidth = 100;
@@ -39,8 +40,6 @@ const Contact = () => {
 
   const [contactOffset, setContactOffset] = useState({x: 0, y: 0});
   const [detailsOffset, setDetailsOffset] = useState({x: 0, y: 0});
-
-  const rows = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
   const [contactDetailHeight, setContactDetailHeight] = useState(0);
 
@@ -114,12 +113,12 @@ const Contact = () => {
           snapToInterval={profileViewWidth + snapOffset}
           scrollEventThrottle={16}
           onScroll={onContactScroll}>
-          {rows.map((item, index) => (
+          {users.map((user, index) => (
             <TouchableOpacity onPress={() => onContactItemPressed(index)}>
-              {/* <TouchableOpacity onPress={onContactItemPressed(index)}> */}
-              <View style={styles.blueCircle}>
-                <Text style={styles.title}>{item}</Text>
-              </View>
+              <Image
+                style={styles.blueCircle}
+                source={user.image} 
+              />
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -144,13 +143,13 @@ const Contact = () => {
           snapToInterval={contactDetailHeight}
           scrollEventThrottle={16}
           onScroll={onDetailScroll}>
-          {rows.map((item) => (
+          {users.map((user) => (
             <View
               style={[
                 styles.detailsScrollViewItem,
                 {height: contactDetailHeight},
               ]}>
-              <Text style={styles.title}>{item}</Text>
+              <Text style={styles.title}>{user.about}</Text>
             </View>
           ))}
         </ScrollView>
