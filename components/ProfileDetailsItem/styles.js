@@ -13,12 +13,12 @@ export default StyleSheet.create({
     alignSelf: 'center',
     color: 'black',
     fontWeight: '600',
-    fontSize: 24,
+    fontSize: 22,
   },
   lastName: {
     alignSelf: 'center',
     color: 'black',
-    fontSize: 24,
+    fontSize: 22,
     marginStart: 4,
   },
   role: {
@@ -26,19 +26,19 @@ export default StyleSheet.create({
     color: 'grey',
     fontWeight: '400',
     marginTop: 8,
-    fontSize: 18,
+    fontSize: 16,
   },
   aboutMe: {
     alignSelf: 'flex-start',
     color: 'black',
     fontWeight: '600',
-    fontSize: 20,
-    marginTop: 20,
+    fontSize: 18,
+    marginTop: 18,
   },
   bio: {
     color: 'grey',
     marginTop: 8,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '400',
   },
   detailsScrollViewItem: {
