@@ -3,7 +3,6 @@ import {StyleSheet, Platform} from 'react-native';
 import {
   avatarIconHorizontalMargin,
   avatarBorderRadius,
-  avatarVerticalPadding,
   midPadding,
   avatarViewWidth,
   verticalPadding
@@ -42,14 +41,12 @@ export default StyleSheet.create({
     paddingEnd: 0,
     alignContent: 'center',
     height: avatarViewWidth + verticalPadding,
-    backgroundColor: 'white',
   },
-  contactIconContainer: {
+  avatarContainer: {
     paddingHorizontal: midPadding,
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: 'white',
-    height: avatarViewWidth ,
+    height: avatarViewWidth + verticalPadding,
   },
 
   blueCircle: {
