@@ -22,7 +22,7 @@ const ProfileImageItem = ({index, onAvatarItemPressed, userImage}) => {
 ProfileImageItem.propTypes = {
   index: PropTypes.number.isRequired,
   onAvatarItemPressed: PropTypes.func.isRequired,
-  userImage: PropTypes.number.isRequired,
+  userImage: PropTypes.any.isRequired,
 };
 
 export default ProfileImageItem;
