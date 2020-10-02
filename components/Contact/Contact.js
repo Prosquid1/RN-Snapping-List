@@ -4,7 +4,7 @@
  */
 
 import React, {useState, useCallback, useRef} from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {InteractionManager, Platform, SafeAreaView, ScrollView, View} from 'react-native';
 
 import styles from './styles';
 
@@ -26,6 +26,8 @@ const Contact = () => {
 
   const [detailsViewHeight, setDetailViewHeight] = useState(0);
 
+  const isPlatformAndroid = Platform.OS === 'android'
+
   const onDetailScrollViewItemLayout = useCallback((event) => {
     const {height} = event.nativeEvent.layout;
     setDetailViewHeight(height);
@@ -37,8 +39,17 @@ const Contact = () => {
     }
     var contentOffsetX = event.nativeEvent.contentOffset.x;
     var cellIndex = contentOffsetX / (avatarViewWidth + snapOffset);
-    const newDetailsViewYOffset = cellIndex * detailsViewHeight;
-    setDetailsViewOffset({x: 0, y: newDetailsViewYOffset});
+    const newDetailsViewOffsetY = cellIndex * detailsViewHeight;
+
+    const newDetailsViewOffset = {x: 0, y: newDetailsViewOffsetY}
+
+    if (isPlatformAndroid) {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => detailsScrollView.current.scrollTo(newDetailsViewOffset) , 0);
+      });
+    } else {
+      setDetailsViewOffset(newDetailsViewOffset);
+    }
   };
 
   const onDetailsScroll = (event) => {
@@ -49,7 +60,16 @@ const Contact = () => {
     var cellIndex = contentOffsetY / detailsViewHeight;
 
     const scrollToIndex = cellIndex * (avatarViewWidth + snapOffset);
-    setAvatarViewOffset({x: scrollToIndex, y: 0});
+    const newAvatarOffset = {x: scrollToIndex, y: 0}
+
+    if (isPlatformAndroid) {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => avatarScrollView.current.scrollTo(newAvatarOffset) , 0);
+      });
+    } else {
+      setAvatarViewOffset(newAvatarOffset);
+    }
+
   };
 
   const onAvatarItemPressed = (cellIndex) => {
