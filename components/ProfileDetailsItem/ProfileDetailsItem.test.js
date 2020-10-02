@@ -3,7 +3,7 @@ import {cleanup, render} from '@testing-library/react-native';
 
 import ProfileDetailsItem from './ProfileDetailsItem';
 
-describe('ProductItem', () => {
+describe('ProfileDetailsItem', () => {
   const defaultProps = {
     detailsViewHeight: 100,
     user: {
