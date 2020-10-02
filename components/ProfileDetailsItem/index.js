@@ -1,1 +1,1 @@
-export { default } from "./ProfileDetailsItem";
+export {default} from './ProfileDetailsItem';

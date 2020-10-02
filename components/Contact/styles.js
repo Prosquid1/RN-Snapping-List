@@ -5,7 +5,7 @@ import {
   avatarBorderRadius,
   midPadding,
   avatarViewWidth,
-  verticalPadding
+  verticalPadding,
 } from '../dimensions';
 
 export default StyleSheet.create({

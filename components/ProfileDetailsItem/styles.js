@@ -1,8 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {
-  verticalPadding
-} from '../dimensions';
-
+import {verticalPadding} from '../dimensions';
 
 export default StyleSheet.create({
   namesContainer: {
@@ -44,5 +41,5 @@ export default StyleSheet.create({
   detailsScrollViewItem: {
     alignContent: 'center',
     padding: verticalPadding,
-  }
+  },
 });

@@ -1,1 +1,1 @@
-export { default } from "./ProfileImageItem";
+export {default} from './ProfileImageItem';

@@ -7,8 +7,7 @@ import styles from './styles';
 
 const ProfileDetailsItem = ({detailsViewHeight, user}) => {
   return (
-    <View
-      style={[styles.detailsScrollViewItem, {height: detailsViewHeight}]}>
+    <View style={[styles.detailsScrollViewItem, {height: detailsViewHeight}]}>
       <View style={styles.namesContainer}>
         <Text style={styles.firstName}>{user.firstName}</Text>
         <Text style={styles.lastName}>{user.lastName}</Text>
