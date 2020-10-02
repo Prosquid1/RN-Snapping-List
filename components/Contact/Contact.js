@@ -15,7 +15,7 @@ import ProfileImageItem from '../ProfileImageItem';
 import ProfileDetailsItem from '../ProfileDetailsItem/ProfileDetailsItem';
 
 const Contact = () => {
-  const contactIconScrollView = useRef(null);
+  const avatarScrollView = useRef(null);
   const detailsScrollView = useRef(null);
 
   const [isDraggingAvatarView, setIsDraggingAvatarView] = useState(false);
@@ -61,7 +61,7 @@ const Contact = () => {
       y: scrollToDetailIndex,
       animated: true,
     });
-    contactIconScrollView.current.scrollTo({
+    avatarScrollView.current.scrollTo({
       x: scrollToContactOffsetX,
       animated: true,
     });
@@ -80,9 +80,9 @@ const Contact = () => {
       <View style={styles.navigatorSeparatorLine} />
       <View>
         <ScrollView
-          ref={contactIconScrollView}
+          ref={avatarScrollView}
           style={styles.profileImageScrollView}
-          contentContainerStyle={styles.contactIconContainer}
+          contentContainerStyle={styles.avatarContainer}
           automaticallyAdjustInsets={false}
           horizontal={true}
           pagingEnabled={true}
