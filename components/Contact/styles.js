@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
+
 import {
   avatarIconHorizontalMargin,
   avatarBorderRadius,
@@ -48,7 +49,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    height: avatarViewWidth + avatarVerticalPadding,
+    height: avatarViewWidth ,
   },
 
   blueCircle: {
