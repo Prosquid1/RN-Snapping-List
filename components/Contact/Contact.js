@@ -81,16 +81,12 @@ const Contact = () => {
   };
 
   const onAvatarItemPressed = (cellIndex) => {
-    const scrollToContactOffsetX = cellIndex * (avatarViewWidth + snapOffset);
     const scrollToDetailIndex = cellIndex * detailsViewHeight;
-    setIsDraggingAvatarView(true);
+    setIsDraggingAvatarView(false);
     setIsDraggingDetailsView(true);
+
     detailsScrollView.current.scrollTo({
       y: scrollToDetailIndex,
-      animated: true,
-    });
-    avatarScrollView.current.scrollTo({
-      x: scrollToContactOffsetX,
       animated: true,
     });
   };
@@ -122,7 +118,7 @@ const Contact = () => {
           onMomentumScrollEnd={onAvatarScrollAnimationEnd}
           snapToAlignment="start"
           snapToInterval={avatarViewWidth + snapOffset}
-          scrollEventThrottle={60}
+          scrollEventThrottle={16}
           onScroll={onAvatarsScroll}>
           {users.map((user, index) => (
             <ProfileImageItem
