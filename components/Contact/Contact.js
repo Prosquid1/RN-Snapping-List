@@ -4,7 +4,7 @@
  */
 
 import React, {useState, useCallback, useRef} from 'react';
-import {SafeAreaView, ScrollView, Text, View} from 'react-native';
+import {InteractionManager, Platform, SafeAreaView, ScrollView, View} from 'react-native';
 
 import styles from './styles';
 
@@ -15,7 +15,7 @@ import ProfileImageItem from '../ProfileImageItem';
 import ProfileDetailsItem from '../ProfileDetailsItem/ProfileDetailsItem';
 
 const Contact = () => {
-  const contactIconScrollView = useRef(null);
+  const avatarScrollView = useRef(null);
   const detailsScrollView = useRef(null);
 
   const [isDraggingAvatarView, setIsDraggingAvatarView] = useState(false);
@@ -25,6 +25,8 @@ const Contact = () => {
   const [detailsViewOffset, setDetailsViewOffset] = useState({x: 0, y: 0});
 
   const [detailsViewHeight, setDetailViewHeight] = useState(0);
+
+  const isPlatformAndroid = Platform.OS === 'android'
 
   const onDetailScrollViewItemLayout = useCallback((event) => {
     const {height} = event.nativeEvent.layout;
@@ -37,8 +39,17 @@ const Contact = () => {
     }
     var contentOffsetX = event.nativeEvent.contentOffset.x;
     var cellIndex = contentOffsetX / (avatarViewWidth + snapOffset);
-    const newDetailsViewYOffset = cellIndex * detailsViewHeight;
-    setDetailsViewOffset({x: 0, y: newDetailsViewYOffset});
+    const newDetailsViewOffsetY = cellIndex * detailsViewHeight;
+
+    const newDetailsViewOffset = {x: 0, y: newDetailsViewOffsetY}
+
+    if (isPlatformAndroid) {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => detailsScrollView.current.scrollTo(newDetailsViewOffset) , 0);
+      });
+    } else {
+      setDetailsViewOffset(newDetailsViewOffset);
+    }
   };
 
   const onDetailsScroll = (event) => {
@@ -49,7 +60,16 @@ const Contact = () => {
     var cellIndex = contentOffsetY / detailsViewHeight;
 
     const scrollToIndex = cellIndex * (avatarViewWidth + snapOffset);
-    setAvatarViewOffset({x: scrollToIndex, y: 0});
+    const newAvatarOffset = {x: scrollToIndex, y: 0}
+
+    if (isPlatformAndroid) {
+      InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => avatarScrollView.current.scrollTo(newAvatarOffset) , 0);
+      });
+    } else {
+      setAvatarViewOffset(newAvatarOffset);
+    }
+
   };
 
   const onAvatarItemPressed = (cellIndex) => {
@@ -61,7 +81,7 @@ const Contact = () => {
       y: scrollToDetailIndex,
       animated: true,
     });
-    contactIconScrollView.current.scrollTo({
+    avatarScrollView.current.scrollTo({
       x: scrollToContactOffsetX,
       animated: true,
     });
@@ -80,9 +100,9 @@ const Contact = () => {
       <View style={styles.navigatorSeparatorLine} />
       <View>
         <ScrollView
-          ref={contactIconScrollView}
+          ref={avatarScrollView}
           style={styles.profileImageScrollView}
-          contentContainerStyle={styles.contactIconContainer}
+          contentContainerStyle={styles.avatarContainer}
           automaticallyAdjustInsets={false}
           horizontal={true}
           pagingEnabled={true}

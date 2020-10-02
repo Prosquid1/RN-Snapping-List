@@ -3,8 +3,6 @@ import { cleanup, render } from "@testing-library/react-native";
 
 import ProfileDetailsItem from "./ProfileDetailsItem";
 
-//Renders avatar, render scrolling, scrolling clips, renders text correctly, 
-
 describe("ProductItem", () => {
   const defaultProps = {
       detailsViewHeight: 100,
