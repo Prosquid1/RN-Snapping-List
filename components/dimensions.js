@@ -9,6 +9,12 @@ export const avatarIconHorizontalMargin = 12;
 
 export const snapOffset = avatarIconHorizontalMargin * 2;
 
+export const defaultDetailHeight =
+  Dimensions.get('window').height -
+  avatarViewWidth -
+  avatarVerticalPadding -
+  40; //Offset 40
+
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
 export const midPadding =
